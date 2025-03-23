@@ -1,49 +1,29 @@
-package BananaStore.model;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
+package model;
 
 /**
- * Clase abstracta que representa un producto genérico en Banana Store.
- * Contiene los atributos comunes a todos los productos: marca, modelo y precio.
+ * Clase abstracta que representa un producto en la tienda Banana Store.
+ * Contiene atributos comunes a todos los productos.
  */
 public abstract class Product {
-    protected String brand;
-    protected String model;
-    protected double price;
-
+    protected String marca;
+    protected String modelo;
+    protected double precio;
+    
     /**
      * Constructor de la clase Product.
-     * @param brand La marca del producto.
-     * @param model El modelo del producto.
-     * @param price El precio del producto.
+     * 
+     * @param marca  La marca del producto.
+     * @param modelo El modelo del producto.
+     * @param precio El precio del producto.
      */
-    public Product(String brand, String model, double price) {
-        this.brand = brand;
-        this.model = model;
-        this.price = price;
+    public Product(String marca, String modelo, double precio) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.precio = precio;
     }
-
-    // Getters y setters...
-
+    
     /**
-     * Método auxiliar para formatear el precio en formato anglosajón:
-     *  - Coma (,) para separar miles
-     *  - Punto (.) para decimales
-     * @return El precio formateado como cadena (ej. 18,999.00).
+     * Método abstracto para mostrar los detalles del producto.
      */
-    protected String getFormattedPrice() {
-        // Obtiene símbolos de formato para el locale US
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        // Define el patrón de formateo
-        DecimalFormat df = new DecimalFormat("#,###.00", symbols);
-        return df.format(price);
-    }
-
-    /**
-     * Método abstracto que devuelve una descripción completa del producto.
-     * @return Una cadena con la descripción del producto.
-     */
-    public abstract String getDescription();
+    public abstract void showDetails();
 }

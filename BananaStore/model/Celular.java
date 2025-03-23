@@ -1,66 +1,44 @@
-package BananaStore.model;
+package model;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
- * Clase que representa un Celular en Banana Store.
- * Hereda de Product e incluye atributos específicos como tamaño de pantalla, capacidad de batería y número de cámaras.
+ * Clase que representa un Celular.
  */
 public class Celular extends Product {
-    private double screenSize;    // Tamaño de pantalla en pulgadas
-    private int batteryCapacity;  // Capacidad de batería en mAh
-    private int cameras;          // Número de cámaras
-
+    private String tamanoPantalla;
+    private String capacidadBateria;
+    private int cantidadCamaras;
+    
     /**
      * Constructor de la clase Celular.
-     * @param brand La marca del celular.
-     * @param model El modelo del celular.
-     * @param price El precio del celular.
-     * @param screenSize El tamaño de la pantalla en pulgadas.
-     * @param batteryCapacity La capacidad de la batería en mAh.
-     * @param cameras El número de cámaras.
+     * 
+     * @param marca             La marca del celular.
+     * @param modelo            El modelo del celular.
+     * @param precio            El precio del celular.
+     * @param tamanoPantalla    El tamaño de la pantalla (ej. "6.5\"").
+     * @param capacidadBateria  La capacidad de la batería (ej. "5000 mAh").
+     * @param cantidadCamaras   La cantidad de cámaras.
      */
-    public Celular(String brand, String model, double price, double screenSize, int batteryCapacity, int cameras) {
-        super(brand, model, price);
-        this.screenSize = screenSize;
-        this.batteryCapacity = batteryCapacity;
-        this.cameras = cameras;
+    public Celular(String marca, String modelo, double precio, String tamanoPantalla, String capacidadBateria, int cantidadCamaras) {
+        super(marca, modelo, precio);
+        this.tamanoPantalla = tamanoPantalla;
+        this.capacidadBateria = capacidadBateria;
+        this.cantidadCamaras = cantidadCamaras;
     }
-
-    // Getters y setters
-
-    public double getScreenSize() {
-        return screenSize;
-    }
-
-    public void setScreenSize(double screenSize) {
-        this.screenSize = screenSize;
-    }
-
-    public int getBatteryCapacity() {
-        return batteryCapacity;
-    }
-
-    public void setBatteryCapacity(int batteryCapacity) {
-        this.batteryCapacity = batteryCapacity;
-    }
-
-    public int getCameras() {
-        return cameras;
-    }
-
-    public void setCameras(int cameras) {
-        this.cameras = cameras;
-    }
-
-    /**
-     * Devuelve la descripción completa del Celular.
-     * @return Una cadena con la descripción del producto.
-     */
+    
     @Override
-    public String getDescription() {
-        return "Celular: " + brand + " " + model +
-               "\nPrecio: $" + getFormattedPrice() +
-               "\nPantalla: " + screenSize + " pulgadas" +
-               "\nBatería: " + batteryCapacity + " mAh" +
-               "\nCámaras: " + cameras;
+    public void showDetails() {
+        // Forzar uso de Locale.US para el formato 18,999.00
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat formatter = new DecimalFormat("#,###.00", symbols);
+        
+        System.out.println("Celular: " + marca + " " + modelo);
+        System.out.println("Precio: $" + formatter.format(precio));
+        System.out.println("Pantalla: " + tamanoPantalla);
+        System.out.println("Batería: " + capacidadBateria);
+        System.out.println("Cámaras: " + cantidadCamaras);
     }
 }

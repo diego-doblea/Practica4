@@ -1,179 +1,229 @@
-package BananaStore;
-
+import factory.ProductFactory;
+import model.Product;
 import java.util.Scanner;
-import BananaStore.builder.*;
-import BananaStore.model.Product;
 
 /**
- * Clase principal que orquesta la interacción con el usuario para registrar productos en Banana Store.
- * Utiliza el patrón Builder para construir objetos de tipo Laptop, Celular o Tablet.
+ * Clase principal para la ejecución del sistema de registro de productos.
  */
 public class Main {
-    /**
-     * Método principal que inicia la aplicación.
-     * @param args Argumentos de la línea de comandos.
-     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ProductDirector director = new ProductDirector();
-        Product product = null;
-
-        // Menú de selección con opción de salir
+        
+        // Menú de selección de tipo de producto
         System.out.println("---------------------------------------------------");
-        System.out.println("Selecciona una opción:");
-        System.out.println("0. Salir");
-        System.out.println("1. Registrar Laptop");
-        System.out.println("2. Registrar Celular");
-        System.out.println("3. Registrar Tablet");
+        System.out.println("Selecciona el tipo de producto que vas a registrar: ");
+        System.out.println("1. Laptop");
+        System.out.println("2. Celular");
+        System.out.println("3. Tablet");
+        System.out.println("4. Salir");
         System.out.println("---------------------------------------------------");
-
-        int option = scanner.nextInt();
-        scanner.nextLine(); // Consumir salto de línea
-
-        if (option == 0) {
-            System.out.println("Saliendo del programa...");
-            scanner.close();
-            return;
+        System.out.print("Se selecciona: ");
+        int tipoProducto = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+        
+        String type = "";
+        switch(tipoProducto) {
+            case 1:
+                type = "laptop";
+                break;
+            case 2:
+                type = "celular";
+                break;
+            case 3:
+                type = "tablet";
+                break;
+            case 4:
+                System.out.println("Saliendo del programa...");
+                System.exit(0);
+            default:
+                System.out.println("Opción no válida.");
+                System.exit(0);
         }
-
+        
         // Solicitar atributos comunes
         System.out.println("---------------------------------------------------");
         System.out.print("Ingresa la marca del producto: ");
-        String brand = scanner.nextLine();
+        String marca = scanner.nextLine();
+        
         System.out.println("---------------------------------------------------");
         System.out.print("Ingresa el modelo del producto: ");
-        String model = scanner.nextLine();
+        String modelo = scanner.nextLine();
+        
         System.out.println("---------------------------------------------------");
-        System.out.print("Ingresa el precio del producto (No poner comas, ni puntos): ");
-        double price = scanner.nextDouble();
+        System.out.print("Ingresa el precio del producto: ");
+        double precio = scanner.nextDouble();
         scanner.nextLine(); // Consumir salto de línea
-        System.out.println("---------------------------------------------------");
-
-        // Sección para la creación del producto según la opción seleccionada
-        switch (option) {
-            case 1: // Laptop
-                System.out.println("Selecciona el tamaño de pantalla (en pulgadas):");
-                System.out.println("1. 13.3\"");
-                System.out.println("2. 15.6\"");
-                System.out.println("3. 17.0\"");
+        
+        Product producto = null;
+        
+        // Solicitar atributos específicos según el tipo de producto
+        switch (type) {
+            case "laptop":
+                // Para Laptop: tamanoPantalla, procesador, memoriaRam, almacenamiento
                 System.out.println("---------------------------------------------------");
-                int laptopScreenOption = scanner.nextInt();
-                double laptopScreenSize;
-                switch(laptopScreenOption) {
-                    case 1: laptopScreenSize = 13.3; break;
-                    case 2: laptopScreenSize = 15.6; break;
-                    case 3: laptopScreenSize = 17.0; break;
-                    default: laptopScreenSize = 15.6; // Valor por defecto
-                }
-                scanner.nextLine(); // Consumir salto de línea
+                System.out.print("Ingresa el tamaño de pantalla (por ejemplo, 15.6\"): ");
+                String tamanoPantallaLaptop = scanner.nextLine();
+                
                 System.out.println("---------------------------------------------------");
                 System.out.print("Ingresa el procesador: ");
-                String processor = scanner.nextLine();
+                String procesador = scanner.nextLine();
+                
                 System.out.println("---------------------------------------------------");
                 System.out.print("Ingresa la memoria RAM (en GB): ");
-                int ram = scanner.nextInt();
+                int memoriaRam = scanner.nextInt();
+                
                 System.out.println("---------------------------------------------------");
                 System.out.print("Ingresa el almacenamiento (en GB): ");
-                int storage = scanner.nextInt();
-                scanner.nextLine(); // Consumir salto de línea
-                product = director.constructLaptop(new LaptopBuilder(), brand, model, price, laptopScreenSize, processor, ram, storage);
+                int almacenamiento = scanner.nextInt();
+                
+                producto = ProductFactory.createProduct(
+                        "laptop",
+                        marca,
+                        modelo,
+                        precio,
+                        tamanoPantallaLaptop,
+                        procesador,
+                        memoriaRam,
+                        almacenamiento
+                );
                 break;
-            case 2: // Celular
-                System.out.println("Selecciona el tamaño de pantalla (en pulgadas):");
-                System.out.println("1. 6.1\"");
-                System.out.println("2. 6.5\"");
-                System.out.println("3. 6.8\"");
+                
+            case "celular":
+                // Para Celular: tamanoPantalla, capacidadBateria, cantidadCamaras
                 System.out.println("---------------------------------------------------");
-                int celularScreenOption = scanner.nextInt();
-                double celularScreenSize;
-                switch(celularScreenOption) {
-                    case 1: celularScreenSize = 6.1; break;
-                    case 2: celularScreenSize = 6.5; break;
-                    case 3: celularScreenSize = 6.8; break;
-                    default: celularScreenSize = 6.1;
+                System.out.print("Selecciona el tamaño de pantalla (en pulgadas):\n1. 6.1\"\n2. 6.5\"\n3. 6.8\"\nSe selecciona: ");
+                int opcionPantalla = scanner.nextInt();
+                String tamanoPantallaCelular = "";
+                switch(opcionPantalla) {
+                    case 1:
+                        tamanoPantallaCelular = "6.1\"";
+                        break;
+                    case 2:
+                        tamanoPantallaCelular = "6.5\"";
+                        break;
+                    case 3:
+                        tamanoPantallaCelular = "6.8\"";
+                        break;
+                    default:
+                        System.out.println("Opción no válida para tamaño de pantalla.");
+                        System.exit(0);
                 }
-                scanner.nextLine(); // Consumir salto de línea
+                
                 System.out.println("---------------------------------------------------");
-                System.out.println("Selecciona la capacidad de batería:");
-                System.out.println("1. 3500 mAh");
-                System.out.println("2. 4500 mAh");
-                System.out.println("3. 5000 mAh");
-                System.out.println("---------------------------------------------------");
-                int batteryOption = scanner.nextInt();
-                int batteryCapacity;
-                switch(batteryOption) {
-                    case 1: batteryCapacity = 3500; break;
-                    case 2: batteryCapacity = 4500; break;
-                    case 3: batteryCapacity = 5000; break;
-                    default: batteryCapacity = 3500;
+                System.out.print("Selecciona la capacidad de batería:\n1. 3500 mAh\n2. 4500 mAh\n3. 5000 mAh\nSe selecciona: ");
+                int opcionBateria = scanner.nextInt();
+                String capacidadBateria = "";
+                switch(opcionBateria) {
+                    case 1:
+                        capacidadBateria = "3500 mAh";
+                        break;
+                    case 2:
+                        capacidadBateria = "4500 mAh";
+                        break;
+                    case 3:
+                        capacidadBateria = "5000 mAh";
+                        break;
+                    default:
+                        System.out.println("Opción no válida para capacidad de batería.");
+                        System.exit(0);
                 }
-                scanner.nextLine(); // Consumir salto de línea
+                
                 System.out.println("---------------------------------------------------");
-                System.out.println("Selecciona la cantidad de cámaras:");
-                System.out.println("1. 2");
-                System.out.println("2. 3");
-                System.out.println("3. 4");
-                System.out.println("---------------------------------------------------");
-                int camerasOption = scanner.nextInt();
-                int cameras;
-                switch(camerasOption) {
-                    case 1: cameras = 2; break;
-                    case 2: cameras = 3; break;
-                    case 3: cameras = 4; break;
-                    default: cameras = 2;
+                System.out.print("Selecciona la cantidad de cámaras:\n1. 2\n2. 3\n3. 4\nSe selecciona: ");
+                int opcionCamaras = scanner.nextInt();
+                int cantidadCamaras = 0;
+                switch(opcionCamaras) {
+                    case 1:
+                        cantidadCamaras = 2;
+                        break;
+                    case 2:
+                        cantidadCamaras = 3;
+                        break;
+                    case 3:
+                        cantidadCamaras = 4;
+                        break;
+                    default:
+                        System.out.println("Opción no válida para cantidad de cámaras.");
+                        System.exit(0);
                 }
-                scanner.nextLine(); // Consumir salto de línea
-                product = director.constructCelular(new CelularBuilder(), brand, model, price, celularScreenSize, batteryCapacity, cameras);
+                
+                producto = ProductFactory.createProduct(
+                        "celular",
+                        marca,
+                        modelo,
+                        precio,
+                        tamanoPantallaCelular,
+                        capacidadBateria,
+                        cantidadCamaras
+                );
                 break;
-            case 3: // Tablet
-                System.out.println("Selecciona el tamaño de pantalla (en pulgadas):");
-                System.out.println("1. 8.0\"");
-                System.out.println("2. 10.1\"");
-                System.out.println("3. 12.0\"");
+                
+            case "tablet":
+                // Para Tablet: tamanoPantalla, compatibilidadLapiz, cantidadCamaras
                 System.out.println("---------------------------------------------------");
-                int tabletScreenOption = scanner.nextInt();
-                double tabletScreenSize;
-                switch(tabletScreenOption) {
-                    case 1: tabletScreenSize = 8.0; break;
-                    case 2: tabletScreenSize = 10.1; break;
-                    case 3: tabletScreenSize = 12.0; break;
-                    default: tabletScreenSize = 10.1;
+                System.out.print("Selecciona el tamaño de pantalla (en pulgadas):\n1. 8\"\n2. 10\"\n3. 12\"\nSe selecciona: ");
+                int opcionPantallaTablet = scanner.nextInt();
+                String tamanoPantallaTablet = "";
+                switch(opcionPantallaTablet) {
+                    case 1:
+                        tamanoPantallaTablet = "8\"";
+                        break;
+                    case 2:
+                        tamanoPantallaTablet = "10\"";
+                        break;
+                    case 3:
+                        tamanoPantallaTablet = "12\"";
+                        break;
+                    default:
+                        System.out.println("Opción no válida para tamaño de pantalla.");
+                        System.exit(0);
                 }
-                scanner.nextLine(); // Consumir salto de línea
+                
                 System.out.println("---------------------------------------------------");
-                System.out.print("¿La tablet es compatible con lápiz táctil? (S/N): ");
-                String stylusInput = scanner.nextLine();
-                boolean stylusCompatibility = stylusInput.equalsIgnoreCase("S");
+                System.out.print("¿La tablet es compatible con lápiz táctil? (true/false): ");
+                boolean compatibilidadLapiz = scanner.nextBoolean();
+                
                 System.out.println("---------------------------------------------------");
-                System.out.println("Selecciona la cantidad de cámaras:");
-                System.out.println("1. 2");
-                System.out.println("2. 3");
-                System.out.println("3. 4");
-                System.out.println("---------------------------------------------------");
-                int tabletCamerasOption = scanner.nextInt();
-                int tabletCameras;
-                switch(tabletCamerasOption) {
-                    case 1: tabletCameras = 2; break;
-                    case 2: tabletCameras = 3; break;
-                    case 3: tabletCameras = 4; break;
-                    default: tabletCameras = 2;
+                System.out.print("Selecciona la cantidad de cámaras:\n1. 1\n2. 2\n3. 3\nSe selecciona: ");
+                int opcionCamarasTablet = scanner.nextInt();
+                int cantidadCamarasTablet = 0;
+                switch(opcionCamarasTablet) {
+                    case 1:
+                        cantidadCamarasTablet = 1;
+                        break;
+                    case 2:
+                        cantidadCamarasTablet = 2;
+                        break;
+                    case 3:
+                        cantidadCamarasTablet = 3;
+                        break;
+                    default:
+                        System.out.println("Opción no válida para cantidad de cámaras.");
+                        System.exit(0);
                 }
-                scanner.nextLine(); // Consumir salto de línea
-                product = director.constructTablet(new TabletBuilder(), brand, model, price, tabletScreenSize, stylusCompatibility, tabletCameras);
+                
+                producto = ProductFactory.createProduct(
+                        "tablet",
+                        marca,
+                        modelo,
+                        precio,
+                        tamanoPantallaTablet,
+                        compatibilidadLapiz,
+                        cantidadCamarasTablet
+                );
                 break;
+                
             default:
-                System.out.println("Opción inválida.");
-                break;
+                System.out.println("Tipo de producto no reconocido.");
+                System.exit(0);
         }
-
-        // Mostrar resumen del producto registrado
-        if (product != null) {
-            System.out.println("---------------------------------------------------");
-            System.out.println("**Producto registrado correctamente:**");
-            System.out.println(product.getDescription());
-            System.out.println("---------------------------------------------------");
-        }
-
+        
+        // Mostrar el resumen del producto registrado
+        System.out.println("---------------------------------------------------");
+        System.out.println("**Producto registrado correctamente:**");
+        producto.showDetails();
+        System.out.println("---------------------------------------------------");
+        
         scanner.close();
     }
 }
