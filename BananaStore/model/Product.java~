@@ -1,0 +1,66 @@
+package BananaStore.model;
+
+import java.text.DecimalFormat;
+
+/**
+ * Clase abstracta que representa un producto genérico en Banana Store.
+ * Contiene los atributos comunes a todos los productos: marca, modelo y precio.
+ */
+public abstract class Product {
+    protected String brand;
+    protected String model;
+    protected double price;
+
+    /**
+     * Constructor de la clase Product.
+     * @param brand La marca del producto.
+     * @param model El modelo del producto.
+     * @param price El precio del producto.
+     */
+    public Product(String brand, String model, double price) {
+        this.brand = brand;
+        this.model = model;
+        this.price = price;
+    }
+
+    // Getters y setters
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    /**
+     * Método auxiliar para formatear el precio con separadores de miles y dos decimales.
+     * @return El precio formateado como cadena.
+     */
+    protected String getFormattedPrice() {
+        DecimalFormat df = new DecimalFormat("#,###.00");
+        return df.format(price);
+    }
+
+    /**
+     * Método abstracto que devuelve una descripción completa del producto.
+     * @return Descripción del producto.
+     */
+    public abstract String getDescription();
+}
